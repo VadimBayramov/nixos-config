@@ -2,41 +2,28 @@
   description = "NixOS config for Pavilion with Hyprland, PipeWire, Wine and needed apps";
 
   inputs = {
-    # Основной набор пакетов NixOS для версии 24.05
+    # Основной набор пакетов NixOS 24.05 стабильный
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
 
-    # Home Manager — управление пользовательскими конфигурациями
+    # Home Manager для управления настройками пользователя
     home-manager.url = "github:nix-community/home-manager/release-24.05";
 
-    # Если хочешь, можно добавить сюда flake с end-4 dots-hyprland (с твоей ссылкой)
-    # Например:
-    # dots-hyprland.url = "github:end-4/dots-hyprland";
+    # Репозиторий с конфигами и dotfiles Hyprland от end-4
+    illogical-impulse.url = "github:end-4/dots-hyprland-nixos";
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }:
+  outputs = { self, nixpkgs, home-manager, illogical-impulse, ... }:
     let
-      system = "x86_64-linux";  # Архитектура системы
+      system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
-    in
-    {
-      # Основная NixOS конфигурация под именем Pavilion
+    in {
       nixosConfigurations.Pavilion = nixpkgs.lib.nixosSystem {
         inherit system;
 
-        # Основные модули, загружаемые в систему
         modules = [
-          # Твой хост-конфиг, где прописаны системные параметры
-          ./hosts/Pavilion.nix
-
-          # Интеграция Home Manager для управления пользовательскими настройками
-          (home-manager.lib.homeManagerConfiguration {
-            inherit system;
-            username = "Diamond";  # Имя пользователя, под которым будет работать Home Manager
-            homeDirectory = "/home/Diamond";  # Домашняя папка пользователя
-
-            # Здесь подключаем файл с пользовательскими настройками (kitty, fish, dotfiles и т.д.)
-            modules = [ ./home/Diamond.nix ];
-          })
+          ./hosts/Pavilion.nix                            # Основной системный конфиг для Pavilion
+          home-manager.nixosModules.home-manager          # Включаем home-manager как модуль NixOS
+          illogical-impulse.homeManagerModules.default    # Модуль dotfiles и настроек Hyprland от end-4
         ];
       };
     };
