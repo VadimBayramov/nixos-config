@@ -20,6 +20,12 @@
     discord
     wine
     git
+
+    # === Файловый менеджер Thunar с автоподключением внешних носителей ===
+    thunar                 # Сам файловый менеджер
+    thunar-volman          # Поддержка автоподключения и монтирования
+    gvfs                   # Необходим для работы Thunar с внешними накопителями
+    udisks                 # Демон управления дисками
   ];
 
   # === PipeWire (через home-manager, дублирует системный, но конфликтов обычно нет) ===
@@ -41,14 +47,14 @@
     enable = true;
 
     hyprland = {
-      package = pkgs.hyprland;                  # Используем пакет Hyprland из nixpkgs
-      xdgPortalPackage = pkgs.xdg-desktop-portal-hyprland;  # Для правильной работы приложений на Wayland
+      package = pkgs.hyprland;                             # Используем пакет Hyprland из nixpkgs
+      xdgPortalPackage = pkgs.xdg-desktop-portal-hyprland; # Для правильной работы приложений на Wayland
 
-      ozoneWayland.enable = true;                # Включаем поддержку ozone-wayland (рекомендуется для Hyprland)
+      ozoneWayland.enable = true;                          # Включаем поддержку ozone-wayland (рекомендуется для Hyprland)
     };
 
     dotfiles = {
-      anyrun.enable = true;       # dotfiles из набора end-4
+      anyrun.enable = true;   # dotfiles из набора end-4
       fish.enable = true;
       kitty.enable = true;
       # Можно добавить другие по необходимости
