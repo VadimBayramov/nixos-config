@@ -1,51 +1,45 @@
 { config, pkgs, ... }:
 
 {
+  # Импорт модуля для специфической поддержки железа HP Pavilion
   imports = [
-    # Импортируем модуль для HP Pavilion — улучшенная поддержка железа (возможно, клавиатура, экран, тачпад и т.д.)
     "${pkgs.path}/nixos/modules/installer/tools/nixos-hardware/hp-pavilion"
   ];
 
-  # === Графическая система ===
+  # === X Server (графическая подсистема) ===
+  services.xserver.enable = true;          # Включаем X сервер
+  services.xserver.layout = "us,ru";       # Две раскладки: английская и русская
+  services.xserver.xkbOptions = "grp:alt_shift_toggle";  # Переключение раскладки Alt+Shift
 
-  services.xserver.enable = true;       # Включаем X сервер (нужен для запуска графической среды)
-  services.xserver = {
-  layout = "us,ru";                     # Добавляем сразу две раскладки: английская и русская
-  xkbOptions = "grp:alt_shift_toggle";  # Переключение раскладок по Alt+Shift
-};
+  # === Видеодрайверы и OpenGL ===
+  services.xserver.videoDrivers = [ "nvidia" ];       # Проприетарный драйвер NVIDIA
+  hardware.opengl.enable = true;                       # Включаем OpenGL
+  hardware.nvidia.modesetting.enable = true;          # Kernel modesetting для NVIDIA
+  hardware.nvidia.prime.offload.enable = true;        # Offloading для гибридных видеокарт Optimus
 
-  programs.hyprland.enable = true;      # Включаем Hyprland — современный композитор для Wayland
+  # === Звук и PipeWire ===
+  sound.enable = true;             # Базовая поддержка звука
 
-  # === Драйвер видеокарты NVIDIA ===
+  security.rtkit.enable = true;    # Реальное время для низкой задержки звука
 
-  services.xserver.videoDrivers = [ "nvidia" ];        # Используем проприетарный драйвер NVIDIA
-  hardware.opengl.enable = true;                       # Включаем OpenGL (графический стек)
-  hardware.nvidia.modesetting.enable = true;           # Включаем режим настройки ядра (kernel modesetting) — нужен для правильной загрузки и Hyprland
-  hardware.nvidia.prime.offload.enable = true;         # Включаем возможность переключения между встроенной и дискретной графикой (если есть Optimus)
-
-  # === Звук ===
-
-  sound.enable = true;                 # Включаем базовую поддержку звука в NixOS
-
-  # Устаревший способ включения PipeWire — удали это:
-  # services.pipewire.enable = true;
-  # services.pipewire.pulse.enable = true;
-  # services.pipewire.media-session.enable = true;
-
-  # Новый корректный способ — ниже 👇
-
-  # Улучшает работу звука с низкой задержкой — полезно для FL Studio, VST, MIDI и т.д.
-  security.rtkit.enable = true;
-
-  # Настройка PipeWire — современный звуковой сервер, замена PulseAudio и JACK
   services.pipewire = {
-    enable = true;               # Включает PipeWire
-    alsa.enable = true;         # Включает поддержку ALSA (звуковые устройства)
-    alsa.support32Bit = true;   # Нужен для 32-битных приложений (например, старые плагины VST через Wine)
-    pulse.enable = true;        # PipeWire эмулирует PulseAudio — совместимость со старыми программами
+    enable = true;                 # PipeWire — современный звуковой сервер
+    alsa.enable = true;            # Поддержка ALSA
+    alsa.support32Bit = true;      # 32-бит поддержка (для старых приложений и Wine)
+    pulse.enable = true;           # Эмуляция PulseAudio для совместимости
   };
 
-  # === Сеть ===
+  # === Пользователь и группы ===
+  users.users.Diamond = {
+    isNormalUser = true;
+    home = "/home/Diamond";
+    shell = pkgs.fish;             # Оболочка Fish
+    extraGroups = [ "wheel" "video" "input" "audio" ];  # Доступ к видео, звуку и т.д.
+  };
 
-  networking.firewall.enable = false;   # Выключаем фаервол (для домашней сети, если сам контролируешь безопасность)
+  # === Home Manager ===
+  services.home-manager.enable = true;  # Включаем home-manager как сервис
+
+  # === Сеть ===
+  networking.firewall.enable = false;   # Фаервол выключен для домашней сети (по желанию)
 }
