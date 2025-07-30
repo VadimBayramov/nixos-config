@@ -1,12 +1,12 @@
 { config, pkgs, ... }:
 
 {
-  # Shell, терминал и редактор
-  programs.fish.enable = true;
-  programs.kitty.enable = true;
-  programs.vim.enable = true;
+  # === Shell и терминалы ===
+  programs.fish.enable = true;       # Fish shell
+  programs.kitty.enable = true;      # Kitty терминал
+  programs.vim.enable = true;        # Vim редактор
 
-  # Пакеты пользователя
+  # === Основные приложения для пользователя ===
   home.packages = with pkgs; [
     spotify
     firefox
@@ -15,31 +15,43 @@
     remmina
     electrum
     wireguard-tools
-    peazip          # поправил название (pea → peazip)
+    pea
     vlc
     discord
     wine
     git
   ];
 
-  # Системные сервисы не включаются тут, но можно юзерские, если нужны (pipewire клиент)
-  # Обычно PipeWire daemon включается на уровне системы
-  # Здесь можно настроить клиентские утилиты, например:
-  environment.variables = {
-    PIPEWIRE_ENABLE = "1";  # если нужно
+  # === PipeWire (через home-manager, дублирует системный, но конфликтов обычно нет) ===
+  services.pipewire = {
+    enable = true;
+    pulse.enable = true;
   };
 
-  # Flatpak для свежих версий некоторых программ
+  # === Flatpak для некоторых приложений, чтобы иметь свежие версии ===
   programs.flatpak.enable = true;
+
   home.file.".config/flatpak/overrides".text = ''
     [Context]
     shared=ipc,network,xdg-runtime
   '';
 
-  # Конфигурация Hyprland (опционально)
-  # Если хочешь, здесь можно добавить пользовательские конфиги и автозапуск:
-  home.file.".config/hypr/hyprland.conf".source = ./hyprland.conf;  # твой локальный конфиг
+  # === Конфигурация end-4 dots-hyprland ===
+  illogical-impulse = {
+    enable = true;
 
-  # Автоматический запуск программ в Hyprland через home manager
-  # Можно добавить user units systemd для автозапуска (например, pipewire, wireplumber, polkit, dunst)
+    hyprland = {
+      package = pkgs.hyprland;                  # Используем пакет Hyprland из nixpkgs
+      xdgPortalPackage = pkgs.xdg-desktop-portal-hyprland;  # Для правильной работы приложений на Wayland
+
+      ozoneWayland.enable = true;                # Включаем поддержку ozone-wayland (рекомендуется для Hyprland)
+    };
+
+    dotfiles = {
+      anyrun.enable = true;       # dotfiles из набора end-4
+      fish.enable = true;
+      kitty.enable = true;
+      # Можно добавить другие по необходимости
+    };
+  };
 }
