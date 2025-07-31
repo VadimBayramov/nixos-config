@@ -14,5 +14,8 @@
     discord
     wine
     git
+    mpv
+    ffmpeg
+    python311Full
   ];
 }
