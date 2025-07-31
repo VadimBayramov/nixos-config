@@ -18,22 +18,23 @@
   hardware.nvidia.prime.offload.enable = true;        # Offloading для гибридных видеокарт Optimus
 
   # === Звук и PipeWire ===
-  sound.enable = true;             # Базовая поддержка звука
+  hardware.pulseaudio.enable = false;  # Отключаем PulseAudio для избежания конфликтов с PipeWire
+  sound.enable = true;                 # Базовая поддержка звука
 
-  security.rtkit.enable = true;    # Реальное время для низкой задержки звука
+  security.rtkit.enable = true;        # Реальное время для низкой задержки звука
 
   services.pipewire = {
-    enable = true;                 # PipeWire — современный звуковой сервер
-    alsa.enable = true;            # Поддержка ALSA
-    alsa.support32Bit = true;      # 32-бит поддержка (для старых приложений и Wine)
-    pulse.enable = true;           # Эмуляция PulseAudio для совместимости
+    enable = true;                    # PipeWire — современный звуковой сервер
+    alsa.enable = true;               # Поддержка ALSA
+    alsa.support32Bit = true;         # 32-бит поддержка (для старых приложений и Wine)
+    pulse.enable = true;              # Эмуляция PulseAudio для совместимости
   };
 
   # === Пользователь и группы ===
   users.users.diamond = {
     isNormalUser = true;
     home = "/home/diamond";
-    shell = pkgs.fish;             # Оболочка Fish
+    shell = pkgs.fish;               # Оболочка Fish
     extraGroups = [ "wheel" "video" "input" "audio" "networkmanager" ];  # Доступ к видео, звуку, сети и т.д.
   };
 
@@ -41,6 +42,6 @@
   services.home-manager.enable = true;  # Включаем home-manager как сервис
 
   # === Сеть ===
-  networking.firewall.enable = false;   # Фаервол выключен для домашней сети (по желанию)
+  networking.firewall.enable = false;        # Фаервол выключен для домашней сети (по желанию)
   networking.networkmanager.enable = true;  # Включаем NetworkManager для управления сетью
 }
