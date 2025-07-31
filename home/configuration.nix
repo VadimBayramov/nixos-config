@@ -18,7 +18,7 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  system.stateVersion = "23.05";
+  system.stateVersion = "24.05";
 
   # === END-4-DOTS BLOCK ===
   illogical-impulse = {
