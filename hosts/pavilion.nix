@@ -32,7 +32,7 @@
   # === Пользователь и группы ===
   users.users.Diamond = {
     isNormalUser = true;
-    home = "/home/Diamond";
+    home = "/home/diamond";
     shell = pkgs.fish;             # Оболочка Fish
     extraGroups = [ "wheel" "video" "input" "audio" ];  # Доступ к видео, звуку и т.д.
   };
