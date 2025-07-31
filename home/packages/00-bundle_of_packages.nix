@@ -3,5 +3,6 @@
     ./apps.nix
     ./cli.nix
     ./thunar.nix
+    ./flatpak.nix
   ];
 }
