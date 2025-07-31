@@ -7,6 +7,7 @@
     home-manager      = { url = "github:nix-community/home-manager"; };
     illogical-impulse = {
       url = "github:bigsaltyfishes/end-4-dots";
+      # чтобы flake illogical-impulse использовал тот же nixpkgs
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -15,18 +16,18 @@
     let
       system = "x86_64-linux";
     in {
-      # System-конфигурация (единственный «host»)
+      # Единственная NixOS-конфигурация
       nixosConfigurations.system = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
-          ./disko.nix                   # если нужна автоматическая разметка
-          ./nixos/configuration.nix
-          home-manager.nixosModules.home-manager
-          illogical-impulse.homeManagerModules.default
+          ./disko.nix                                 # (по желанию) автоматическая разметка
+          ./home/configuration.nix                    # теперь ваш системный конфиг
+          home-manager.nixosModules.home-manager      # встроенный модуль Home-Manager
+          illogical-impulse.homeManagerModules.default # модуль dot-files end-4-dots
         ];
       };
 
-      # Домашняя конфигурация (необязательно)
+      # (Опционально) отдельная домашняя конфигурация через Home-Manager
       homeConfigurations.user = home-manager.lib.homeManagerConfiguration {
         inherit system;
         modules = [ ./home-manager/home.nix ];
