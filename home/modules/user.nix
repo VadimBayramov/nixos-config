@@ -1,18 +1,28 @@
 { pkgs, ... }: {
-  # === SHELL ===
-  # Управление zsh и defaultUserShell отдаём на сторону illogical-impulse (end-4-dots)
-  # programs.zsh.enable = true;
-  # defaultUserShell = pkgs.zsh;
-
-  users = {
-    users.diamond = {
-      isNormalUser = true;
-      description = "diamond";
-      extraGroups = [ "networkmanager" "wheel" "input" "libvirtd" ];
-      packages = with pkgs; [ ];
-    };
+  users.users.diamond = {
+    isNormalUser = true;
+    description = "diamond";
+    extraGroups = [
+      "wheel"            # Sudo-доступ (администратор)
+      "networkmanager"   # Управление сетью
+      "audio"            # Звук
+      "video"            # Видео/GPU/Webcam
+      "input"            # Клавиатура/мышь/тачпад
+      "libvirtd"         # Виртуальные машины (VirtManager)
+      "docker"           # Docker (если появится)
+      "plugdev"          # Подключаемые устройства (реже встречается)
+      "lp"               # Принтеры
+      "scanner"          # Сканеры
+      "disk"             # Управление дисками (udisks2 и т.п.)
+      "cdrom"            # Доступ к CD/DVD
+      "tape"             # Ленты (если вдруг понадобится)
+      "sys"              # Системные устройства (редко, но встречается)
+      "camera"           # Для некоторых камер/программ (в Wayland)
+      "render"           # GPU-рендер (Mesa, nouveau и пр.)
+      "users"            # Группа пользователей (по умолчанию не вредит)
+    ];
+    packages = with pkgs; [ ];
   };
 
-  # Включить автологин для diamond
   services.getty.autologinUser = "diamond";
 }
