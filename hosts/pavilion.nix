@@ -30,11 +30,11 @@
   };
 
   # === Пользователь и группы ===
-  users.users.Diamond = {
+  users.users.diamond = {
     isNormalUser = true;
     home = "/home/diamond";
     shell = pkgs.fish;             # Оболочка Fish
-    extraGroups = [ "wheel" "video" "input" "audio" ];  # Доступ к видео, звуку и т.д.
+    extraGroups = [ "wheel" "video" "input" "audio" "networkmanager" ];  # Доступ к видео, звуку, сети и т.д.
   };
 
   # === Home Manager ===
@@ -42,4 +42,5 @@
 
   # === Сеть ===
   networking.firewall.enable = false;   # Фаервол выключен для домашней сети (по желанию)
+  networking.networkmanager.enable = true;  # Включаем NetworkManager для управления сетью
 }
