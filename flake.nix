@@ -3,7 +3,7 @@
   description = "Моя NixOS + Illogical Impulse (end-4-dots)";
 
   inputs = {
-    nixpkgs           = { url = "nixos-25.05"; };
+    nixpkgs           = { url = "nixos-24.11"; };
     home-manager      = { url = "github:nix-community/home-manager"; };
     illogical-impulse = {
       url = "github:bigsaltyfishes/end-4-dots";
