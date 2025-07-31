@@ -21,7 +21,7 @@
         inherit system;
 
         modules = [
-          ./hosts/Pavilion.nix                            # Основной системный конфиг для Pavilion
+          ./hosts/pavilion.nix                            # Основной системный конфиг для Pavilion
           home-manager.nixosModules.home-manager          # Включаем home-manager как модуль NixOS
           illogical-impulse.homeManagerModules.default    # Модуль dotfiles и настроек Hyprland от end-4
         ];
