@@ -16,20 +16,37 @@
                 mountpoint = "/boot";
               };
             };
-            swap = {
-              size = "4G";
-              content = {
-                type = "swap";
-                resumeDevice = true;
-              };
-            };
-            root = {
+            luks = {
               size = "100%";
               content = {
-                type = "filesystem";
-                format = "ext4";
-                mountpoint = "/";
+                type = "luks";
+                name = "crypted";
+                content = {
+                  type = "lvm_pv";
+                  vg = "vg0";
+                };
               };
+            };
+          };
+        };
+      };
+    };
+    lvm_vg = {
+      vg0 = {
+        lvs = {
+          swap = {
+            size = "4G";
+            content = {
+              type = "swap";
+              resumeDevice = true;
+            };
+          };
+          root = {
+            size = "100%";
+            content = {
+              type = "filesystem";
+              format = "ext4";
+              mountpoint = "/";
             };
           };
         };
