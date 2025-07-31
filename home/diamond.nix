@@ -9,6 +9,7 @@
   # === Основные приложения для пользователя ===
   home.packages = with pkgs; [
     spotify
+    telegram-desktop
     firefox
     tor-browser
     libreoffice
