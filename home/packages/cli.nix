@@ -1,3 +1,4 @@
+# === Shell и терминалы ===
 {
   programs.fish.enable = true;
   programs.kitty.enable = true;
