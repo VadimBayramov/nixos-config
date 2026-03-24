@@ -12,9 +12,16 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  environment.systemPackages = with pkgs; [
+    git
+    kitty
+    wget
+    curl
+  ];
+
   users.users.sunless = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" "video" ];
   };
 
   services.openssh.enable = true;
