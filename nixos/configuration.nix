@@ -5,8 +5,9 @@
     ./modules/boot.nix
     ./modules/locale.nix
     ./modules/network.nix
-    ./modules/virtualisation.nix
+#   ./modules/virtualisation.nix
     ./modules/niri.nix
+    ./modules/nvidia.nix
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];

@@ -4,20 +4,15 @@
 
   services.xserver.enable = true;
   services.xserver.videoDrivers = [ "vmware" ];
+  services.xserver.displayManager.lightdm.enable = true;
+  services.xserver.windowManager.openbox.enable = true;
 
-  services.greetd = {
-    enable = true;
-    settings = {
-      default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --cmd niri-session";
-        user = "greeter";
-      };
-    };
-  };
+  services.accounts-daemon.enable = true;
 
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
     WLR_NO_HARDWARE_CURSORS = "1";
-    WLR_RENDERER_ALLOW_SOFTWARE = "1";
   };
+
+  programs.bash.loginShellInit = "";
 }
