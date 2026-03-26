@@ -22,7 +22,7 @@
 
   users.users.sunless = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "video" ];
+    extraGroups = [ "wheel" "networkmanager" "video" "input" "seat" ];
   };
 
   services.openssh.enable = true;
